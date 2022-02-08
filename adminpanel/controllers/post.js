@@ -22,56 +22,41 @@ const createNewPost = (req, res) => {
     })
   };
 
-const updatePost = async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    if (post.email === req.body.email) {
-      try {
-        const updatedPost = await Post.findByIdAndUpdate(
-          req.params.id,
-          {
-            $set: req.body,
-          },
-          { new: true }
-        );
-        res.status(200).json(updatedPost);
-      } catch (err) {
-        res.status(500).json(err);
-      }
-    } else {
-      res.status(401).json("You can update only your post!");
+  const updatePost = async (req, res) => {
+    if (!req?.body?.id) {
+        return res.status(400).json({ 'message': 'ID is required.' });
     }
-  } catch (err) {
-    res.status(500).json(err);
-  }
-};
+
+    const post = await Post.findOne({ _id: req.body.id }).exec();
+    if (!post) {
+        return res.status(204).json({ "message": `No post matches ID ${req.body.id}.` });
+    }
+    if (req.body?.title) post.title = req.body.title;
+    if (req.body?.desc) post.desc = req.body.desc;
+    const result = await post.save();
+    res.json(result);
+}
 
 const deletePost = async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    if (post.email === req.body.email) {
-      try {
-        await post.delete();
-        res.status(200).json("Post has been deleted...");
-      } catch (err) {
-        res.status(500).json(err);
-      }
-    } else {
-      res.status(401).json("You can delete only your post!");
+    if (!req?.body?.id) return res.status(400).json({ 'message': 'Post ID required.' });
+
+    const post = await Post.findOne({ _id: req.body.id }).exec();
+    if (!post) {
+        return res.status(204).json({ "message": `No post matches ID ${req.body.id}.` });
     }
-  } catch (err) {
-    res.status(500).json(err);
-  }
-};
+    const result = await post.deleteOne({ _id: req.body.id });
+    res.json(result);
+}
 
 const getPost = async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    res.status(200).json(post);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-};
+    if (!req?.params?.id) return res.status(400).json({ 'message': 'Post ID required.' });
+
+    const post = await Post.findOne({ _id: req.params.id }).exec();
+    if (!post) {
+        return res.status(204).json({ "message": `No post matches ID ${req.params.id}.` });
+    }
+    res.json(post);
+}
 
 module.exports = {
   getAllPosts,

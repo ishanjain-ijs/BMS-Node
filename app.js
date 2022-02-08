@@ -28,7 +28,7 @@ app.use("/refresh", require("./routes/refresh"));
 app.use("/posts", require("./routes/post"));
 // app.use("/category", require("./router/category"));
 app.use("/user", require("./routes/user"));
-
+app.use("/admin/posts", require('./adminpanel/routes/post'))
 const PORT = process.env.PORT;
 
 app.get("/signup", (req, res) => {
