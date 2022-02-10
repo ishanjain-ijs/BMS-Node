@@ -11,7 +11,7 @@ const app = express();
 
 dotenv.config({ path: './config.env' });
 
-require('./db/conn');
+const sequelize = require('./db/conn');
 
 app.use(cors());
 app.use(express.json());
@@ -35,6 +35,15 @@ app.get("/signup", (req, res) => {
   res.send(`Hello Registration world from the server`);
 });
 
-app.listen(PORT, () => {
-  console.log(`server is runnig at port no ${PORT}`);
+sequelize.sync()
+.then(result=>{
+  // console.log(result);
+  app.listen(PORT, () => {
+    console.log(`server is runnig at port no ${PORT}`);
+  })
+
+})
+.catch(err => {
+  console.log(err);
 });
+

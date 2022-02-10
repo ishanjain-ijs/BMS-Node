@@ -2,12 +2,12 @@ const User = require('../models/userSchema');
 const bcrypt = require('bcrypt');
 
 const handleNewUser = async (req, res) => {
-    const { full_name, email, username, password, cpassword  } = req.body;
-    if (!full_name|| !email || !username || !password || !cpassword) return res.status(400).json({ 'message': 'All fields are required.' });
+    const { fullName, email, username, password, cpassword  } = req.body;
+    if (!fullName|| !email || !username || !password || !cpassword) return res.status(400).json({ 'message': 'All fields are required.' });
 
     
-    const duplicate = await User.findOne({ email: email }).exec();
-    if (duplicate) return res.sendStatus(409); 
+    // const duplicate = await User.findOne({ email: email }).exec();
+    // if (duplicate) return res.sendStatus(409); 
 
     try {
         
@@ -17,17 +17,21 @@ const handleNewUser = async (req, res) => {
 
         
         const result = await User.create({
-            "full_name": full_name,
+            "fullName": fullName,
             "email": email,
             "username": username,
             "password": hashedPwd,
             "cpassword": hashedCPwd
-        });
-
-        console.log(result);
-
-        res.status(201).json({ 'success': `New user ${full_name} created!` , result});
-    } catch (err) {
+        })
+        .then(result => {
+            console.log(result)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        res.status(201).json({ 'success': `New user ${fullName} created!` , result});
+    } 
+    catch (err) {
         res.status(500).json({ 'message': err.message });
     }
 }

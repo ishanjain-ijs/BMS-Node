@@ -6,7 +6,7 @@ const handleLogin = async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ 'message': 'Email and password are required.' });
 
-    const foundUser = await User.findOne({ email: email }).exec();
+    const foundUser = await User.findOne({where: {email: email} });
     if (!foundUser) return res.sendStatus(401); 
     
     const match = await bcrypt.compare(password, foundUser.password);
@@ -30,7 +30,7 @@ const handleLogin = async (req, res) => {
         
         foundUser.refreshToken = refreshToken;
         const result = await foundUser.save();
-        console.log(result);
+        // console.log(result);
 
         res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None',secure: true,  maxAge: 24 * 60 * 60 * 1000 }); //
         res.json({ accessToken });
