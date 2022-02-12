@@ -1,19 +1,23 @@
+var db = require('../models')
+const Post =db.posts
 
-const Post = require("../models/postSchema");
-const User = require("../models/userSchema");
+
 const getAllPosts = async (req, res) => {
-  const posts = await Post.find().populate("author", "username");
+  const posts = await Post.findAll({
+    attributes: ['username', 'title', 'desc', 'photo']
+    }
+  )
   if (!posts) return res.status(204).json({ message: "No posts found." });
   res.json(posts);
 };
 
-const createNewPost = (req, res) => {
+const createNewPost = async (req, res) => {
   // console.log(req)
     
-    var post = new Post({
+    var post = await Post.create({
         title: req.body.title,
         desc: req.body.desc,
-        author: req.params.id
+        username: req.body.username
     });
     post.save().then(post => {
         res.send(post);

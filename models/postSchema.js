@@ -1,30 +1,24 @@
-const mongoose = require("mongoose");
+const Sequelize = require('sequelize')
+// const { DataTypes } = require("sequelize");
+const sequelize = require("../db/conn");
 
-const PostSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    desc: {
-      type: String,
-      required: true,
-    },
-    photo: {
-      type: String,
-      required: false,
-    },
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    }
-    // category: [{
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'Category'
-    // }]
+const Post = sequelize.define("Post", {
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false,
   },
-  {timestamps: true}
-);
+  desc: {
+      type: Sequelize.STRING,
+      allowNull: false
+  },
+  photo: {
+    type: Sequelize.BLOB("long"),
+    // allowNull: false,
+  },
+  username: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  }
+});
 
-module.exports = mongoose.model("Post", PostSchema);
+module.exports = Post;

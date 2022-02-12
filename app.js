@@ -12,7 +12,7 @@ const app = express();
 dotenv.config({ path: './config.env' });
 
 const sequelize = require('./db/conn');
-
+require('./models')
 app.use(cors());
 app.use(express.json());
 // app.use("/images", express.static(path.join(__dirname, "/images")));
@@ -41,7 +41,6 @@ sequelize.sync()
   app.listen(PORT, () => {
     console.log(`server is runnig at port no ${PORT}`);
   })
-
 })
 .catch(err => {
   console.log(err);

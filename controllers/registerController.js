@@ -2,7 +2,7 @@ const User = require('../models/userSchema');
 const bcrypt = require('bcrypt');
 
 const handleNewUser = async (req, res) => {
-    const { fullName, email, username, password, cpassword  } = req.body;
+    const {  fullName, email, username, password, cpassword  } = req.body;
     if (!fullName|| !email || !username || !password || !cpassword) return res.status(400).json({ 'message': 'All fields are required.' });
 
     
@@ -17,6 +17,7 @@ const handleNewUser = async (req, res) => {
 
         
         const result = await User.create({
+            // "uid": uid,
             "fullName": fullName,
             "email": email,
             "username": username,

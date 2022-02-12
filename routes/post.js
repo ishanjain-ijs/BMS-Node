@@ -6,7 +6,7 @@ const verifyJWT = require('../middleware/verifyJWT')
 router.route('/')
     .get(postsController.getAllPosts)
     
-router.route('/:id')
+router.route('/')
     .post( verifyJWT, postsController.createNewPost)
     .put( verifyJWT ,postsController.updatePost)
     .delete(verifyJWT, postsController.deletePost);
