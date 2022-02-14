@@ -1,26 +1,24 @@
 var db = require('../../models')
-const Post =db.posts
+const Category =db.categories
 
 
-const getAllPosts = async (req, res) => {
-  const posts = await Post.findAll({
-    attributes: ['username', 'title', 'desc', 'photo']
+const getAllCategories = async (req, res) => {
+  const categories = await Category.findAll({
+    attributes: ['catName']
     }
   )
-  if (!posts) return res.status(204).json({ message: "No posts found." });
-  res.json(posts);
+  if (!categories) return res.status(204).json({ message: "No categories found." });
+  res.json(categories);
 };
 
-const createNewPost = async (req, res) => {
+const createNewCategory = async (req, res) => {
   // console.log(req)
     
-    var post = await Post.create({
-        title: req.body.title,
-        desc: req.body.desc,
-        username: req.body.username
+    var category = await Category.create({
+        "catName": catName
     });
-    post.save().then(post => {
-        res.send(post);
+    category.save().then(category => {
+        res.send(category);
     }, (e) => {
         res.status(400).send(e);
     })
@@ -78,8 +76,8 @@ const getPost = async (req, res) => {
 };
 
 module.exports = {
-  getAllPosts,
-  createNewPost,
+  getAllCategories,
+  createNewCategory,
   updatePost,
   deletePost,
   getPost,
