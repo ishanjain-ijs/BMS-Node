@@ -15,7 +15,7 @@ const createNewCategory = async (req, res) => {
   // console.log(req)
     
     var category = await Category.create({
-        "catName": catName
+        catName: req.body.catName
     });
     category.save().then(category => {
         res.send(category);
@@ -24,7 +24,7 @@ const createNewCategory = async (req, res) => {
     })
   };
 
-const updatePost = async (req, res) => {
+const updateCategory = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.email === req.body.email) {
@@ -48,7 +48,7 @@ const updatePost = async (req, res) => {
   }
 };
 
-const deletePost = async (req, res) => {
+const deleteCategory = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (post.email === req.body.email) {
@@ -66,7 +66,7 @@ const deletePost = async (req, res) => {
   }
 };
 
-const getPost = async (req, res) => {
+const getCategory = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     res.status(200).json(post);
@@ -78,7 +78,7 @@ const getPost = async (req, res) => {
 module.exports = {
   getAllCategories,
   createNewCategory,
-  updatePost,
-  deletePost,
-  getPost,
+  updateCategory,
+  deleteCategory,
+  getCategory,
 };
